@@ -1,8 +1,12 @@
 # require "./lib/teachable_api.rb"
 # client = TeachableApi::Client.new("leotest@gmail.com", "todoable")
-# client.get_lists
-# data = {"list": {"name": "Urgent Things"}}
+# data = {body: {"list": {"name": "Urgent Things"}}}
 # client.add_lists(data)
+# client.get_lists
+
+# data = {
+#   body: {:list=>{:name=>"Test List Number One"}}.to_json
+# }
 
 module TeachableApi
   class Client
@@ -21,15 +25,14 @@ module TeachableApi
 
     def initialize(username = nil, password = nil)
       perform_authorization(username, password)
-      self.class.default_options.merge!(headers: { 'Authorization' => "Token token=\"#{@token}\"" }) if @token
+      self.class.default_options.merge!(headers: DEFAULT_HEADERS.merge({ 'Authorization' => "Token token=\"#{@token}\"" })) if @token
     end
 
     def perform_authorization(username, password)
-      raise "No username or password passed." if username.nil? || password.nil?
+      raise "Please provide a username or password." if username.nil? || password.nil?
 
       response = self.class.post(
         '/authenticate',
-        headers: DEFAULT_HEADERS,
         basic_auth: { username: username, password: password }
       )
 
@@ -46,6 +49,8 @@ module TeachableApi
 
     def add_lists(data)
       response = self.class.post('/lists', data)
+      # response.request
+      #
       binding.pry
     end
 
