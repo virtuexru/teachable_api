@@ -20,6 +20,7 @@ Or install it yourself as:
 
 ## Usage
 
+#### Regular usage:
 ```ruby
 @client = TeachableApi::Client.new("username", "password")
 
@@ -46,6 +47,14 @@ client.finish(list_id, item_id)
 
 # Delete an item by :list_id, :item_id
 client.delete_item(list_id, item_id)
+```
+
+#### If checking out the gem locally:
+```ruby
+bundle exec irb
+require "./lib/teachable_api.rb"
+@client = TeachableApi::Client.new("username", "password")
+# @client.[any available call below]
 ```
 
 ## Development
