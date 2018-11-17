@@ -30,7 +30,7 @@ Or install it yourself as:
 @client.get_list(list_id)
 
 # Add list(s)
-@client.add_lists({:list=>{:name=>"Test List"}})
+@client.add_list({:list=>{:name=>"Test List"}})
 
 # Update existing list by :id
 @client.update_lists(list_Id, {:list=>{:name=>"Ranchos Dineros"}})
@@ -40,6 +40,12 @@ Or install it yourself as:
 
 # Add an item to list by :id
 @client.add_item(list_id, {:item=>{:name=>"Feed the cat"}})
+
+# Mark an item as finished by :list_id, :item_id
+client.finish(list_id, item_id)
+
+# Delete an item by :list_id, :item_id
+client.delete_item(list_id, item_id)
 ```
 
 ## Development

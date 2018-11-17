@@ -9,7 +9,6 @@ RSpec.describe TeachableApi::Client do
     end
   end
 
-  # TODO: Add error testing for some of the calls
   context "client functions" do
     before do
       stub_request(:post, "http://todoable.teachable.tech/api/authenticate").
@@ -50,7 +49,7 @@ RSpec.describe TeachableApi::Client do
       end
     end
 
-    describe "#add_lists" do
+    describe "#add_list" do
       it "adds a list via input" do
         stub_request(:post, "todoable.teachable.tech/api/lists")
           .to_return(body: "{\"name\":\"RSpec Test List\", \"src\":\"http://todoable.teachable.tech/api/lists/fef4ca75-3780-4a61-8a8a-e62a8cf0357c\", \"id\":\"fef4ca75-3780-4a61-8a8a-e62a8cf0357c\"}", status: 201)
@@ -61,11 +60,27 @@ RSpec.describe TeachableApi::Client do
           }
         }
 
-        response = client.add_lists(list_data)
+        response = client.add_list(list_data)
 
         expect(response).to be_an_instance_of(Hash)
         expect(response.size).to be > 0
         expect(response["name"]).to eq("RSpec Test List")
+      end
+
+      it "attempts to add a list that already exists" do
+        stub_request(:post, "todoable.teachable.tech/api/lists")
+          .to_return(body: "{\"name\":[\"has already been taken\"]}", status: 422)
+
+        list_data = {
+          :list => {
+            :name=>"RSpec Test List"
+          }
+        }
+
+        response = client.add_list(list_data)
+
+        expect(response).to be_an_instance_of(String)
+        expect(response).to eq("Error(s): {\"name\":[\"has already been taken\"]}")
       end
     end
 
