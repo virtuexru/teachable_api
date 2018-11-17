@@ -9,20 +9,68 @@ RSpec.describe TeachableApi::Client do
     end
   end
 
-  context "client functions" do
-    before do
-      stub_request(:post, "http://todoable.teachable.tech/api/authenticate").
-         with(headers: {
-          'Accept'=>'*/*',
-          'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-          'Authorization'=>'Basic bGVvdGVzdEBnbWFpbC5jb206dG9kb2FibGU=',
-          'User-Agent'=>'Ruby'
-           }).
-      to_return(status: 200, body: "", headers: {})
+  before do
+    stub_request(:post, "http://todoable.teachable.tech/api/authenticate").
+       with(headers: {
+        'Accept'=>'*/*',
+        'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+        'Authorization'=>'Basic bGVvdGVzdEBnbWFpbC5jb206dG9kb2FibGU=',
+        'User-Agent'=>'Ruby'
+         }).
+    to_return(status: 200, body: "", headers: {})
+  end
+
+  let(:client) { TeachableApi::Client.new("leotest@gmail.com", "todoable") }
+
+  context "private helper methods" do
+    describe "#parse_data" do
+      it "returns a jsonified hash ready for api call" do
+        data = {:list=>{:name=>"Test List"}}
+
+        expect(client.send(:parse_data, data)).to be_an_instance_of(Hash)
+        expect(client.send(:parse_data, data)).to eq({:body=>data.to_json})
+      end
     end
 
-    let(:client) { TeachableApi::Client.new("leotest@gmail.com", "todoable") }
+    describe "#parse_response" do
+      it "will return the body parsed on 200" do
+        response = { body: '{"lists":[{"name":"Test List Number One","src":"http://todoable.teachable.tech/api/lists/c81da1d0-9032-4cfe-8b70-eac81738c010","id":"c81da1d0-9032-4cfe-8b70-eac81738c010"}]}', code: 200 }
+        response = OpenStruct.new(response)
 
+        expect(client.send(:parse_response, response)).to eq({"lists"=>[{"name"=>"Test List Number One", "src"=>"http://todoable.teachable.tech/api/lists/c81da1d0-9032-4cfe-8b70-eac81738c010", "id"=>"c81da1d0-9032-4cfe-8b70-eac81738c010"}]})
+      end
+
+      it "will return the body parsed on 201" do
+        response = { body: '{"lists":[{"name":"Test List Number One","src":"http://todoable.teachable.tech/api/lists/c81da1d0-9032-4cfe-8b70-eac81738c010","id":"c81da1d0-9032-4cfe-8b70-eac81738c010"}]}', code: 201 }
+        response = OpenStruct.new(response)
+
+        expect(client.send(:parse_response, response)).to eq({"lists"=>[{"name"=>"Test List Number One", "src"=>"http://todoable.teachable.tech/api/lists/c81da1d0-9032-4cfe-8b70-eac81738c010", "id"=>"c81da1d0-9032-4cfe-8b70-eac81738c010"}]})
+      end
+
+      it "will return object deleted on 204" do
+        response = { body: "Object deleted", code: 204 }
+        response = OpenStruct.new(response)
+
+        expect(client.send(:parse_response, response)).to eq("Object deleted")
+      end
+
+      it "will return an error on 422" do
+        response = { code: 422 }
+        response = OpenStruct.new(response)
+
+        expect(client.send(:parse_response, response)).to eq("Error(s): #<OpenStruct code=422>")
+      end
+
+      it "will raise on any invalid status" do
+        response = { code: 500 }
+        response = OpenStruct.new(response)
+
+        expect { client.send(:parse_response, response) }.to raise_error(RuntimeError)
+      end
+    end
+  end
+
+  context "client functions" do
     describe "#get_lists" do
       it "returns all available lists" do
         stub_request(:get, "todoable.teachable.tech/api/lists")

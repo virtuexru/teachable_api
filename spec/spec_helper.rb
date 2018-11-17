@@ -1,5 +1,6 @@
 require "bundler/setup"
 require "webmock/rspec"
+require "ostruct"
 require_relative "../lib/teachable_api"
 
 RSpec.configure do |config|
