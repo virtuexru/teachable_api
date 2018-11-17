@@ -95,6 +95,16 @@ RSpec.describe TeachableApi::Client do
         expect(response.size).to be > 0
         expect(response["name"]).to eq("Test List Number One")
       end
+
+      it "when id doesn't exist or is invalid" do
+        stub_request(:get, "todoable.teachable.tech/api/lists/c81da1d0-9032-4cfe-8b70-eac81738c011")
+          .to_return(body: "", status: 404)
+
+        response = client.get_list("c81da1d0-9032-4cfe-8b70-eac81738c011")
+
+        expect(response).to be_an_instance_of(String)
+        expect(response).to eq("Object not found")
+      end
     end
 
     describe "#add_list" do

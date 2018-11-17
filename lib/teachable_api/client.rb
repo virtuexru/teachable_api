@@ -3,7 +3,6 @@ module TeachableApi
     include HTTParty
 
     attr_accessor :token, :lists, :list
-    attr_accessor :username, :password
 
     base_uri "http://todoable.teachable.tech/api"
     format :json
@@ -12,9 +11,7 @@ module TeachableApi
     # INIT
     ##
     def initialize(username = nil, password = nil)
-      @username = username
-      @password = password
-      perform_authorization
+      perform_authorization(username, password)
       self.class.default_options.merge!(headers: { 'Authorization' => "Token token=\"#{@token}\"" }) if @token
     end
 
@@ -74,6 +71,8 @@ module TeachableApi
         JSON.parse(response.body)
       when 204
         "Object deleted"
+      when 404
+        "Object not found"
       when 422
         "Error(s): #{response}"
       else
@@ -81,8 +80,8 @@ module TeachableApi
       end
     end
 
-    def perform_authorization
-      raise "Please provide a username or password" if @username.nil? || @password.nil?
+    def perform_authorization(username, password)
+      raise "Please provide a username or password" if username.nil? || password.nil?
 
       response = self.class.post(
         '/authenticate',
