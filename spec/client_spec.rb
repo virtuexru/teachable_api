@@ -56,7 +56,7 @@ RSpec.describe TeachableApi::Client do
 
         list_data = {
           :list => {
-            :name=>"RSpec Test List"
+            :name => "RSpec Test List"
           }
         }
 
@@ -73,7 +73,7 @@ RSpec.describe TeachableApi::Client do
 
         list_data = {
           :list => {
-            :name=>"RSpec Test List"
+            :name => "RSpec Test List"
           }
         }
 

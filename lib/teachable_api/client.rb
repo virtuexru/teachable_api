@@ -1,14 +1,3 @@
-# require "./lib/teachable_api.rb"
-# client = TeachableApi::Client.new("leotest@gmail.com", "todoable")
-# client.get_lists
-# client.get_list("c81da1d0-9032-4cfe-8b70-eac81738c010")
-# client.add_list({:list=>{:name=>"Test List #4"}})
-# client.update_lists("c81da1d0-9032-4cfe-8b70-eac81738c010", {:list=>{:name=>"Ranchos Dineros"}})
-# client.delete_list("fef4ca75-3780-4a61-8a8a-e62a8cf0357c")
-# client.add_item("c81da1d0-9032-4cfe-8b70-eac81738c010", {:item=>{:name=>"Feed the dog"}})
-# client.finish("c81da1d0-9032-4cfe-8b70-eac81738c010", "a2c9c894-68ed-4d84-ad96-16c2ae39f906")
-# client.delete_item("c81da1d0-9032-4cfe-8b70-eac81738c010", "142ba092-731e-4c5a-a457-c1ed355d4ede")
-
 module TeachableApi
   class Client
     include HTTParty
