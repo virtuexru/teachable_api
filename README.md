@@ -1,8 +1,6 @@
 # TeachableApi
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/teachable_api`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Ruby gem that wraps the endpoints of this HTTP API [Todoable @ Teachable.tech](http://todoable.teachable.tech)
 
 ## Installation
 
@@ -22,17 +20,35 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+@client = TeachableApi::Client.new("username", "password")
+
+# Get array of lists
+@client.get_lists
+
+# Get specific list by :id
+@client.get_list(list_id)
+
+# Add list(s)
+@client.add_lists({:list=>{:name=>"Test List"}})
+
+# Update existing list by :id
+@client.update_lists(list_Id, {:list=>{:name=>"Ranchos Dineros"}})
+
+# Delete a list by :id
+@client.delete_list(list_id)
+
+# Add an item to list by :id
+@client.add_item(list_id, {:item=>{:name=>"Feed the cat"}})
+```
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+Run `bundle exec rspec` to run the tests. You can also run `bundle exec irb` for an interactive prompt that will allow you to experiment.
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/teachable_api.
+Bug reports and pull requests are welcome on GitHub at https://github.com/virtuexru/teachable_api.
 
 ## License
 

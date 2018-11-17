@@ -1,5 +1,6 @@
 require "bundler/setup"
-require "teachable_api"
+require "webmock/rspec"
+require_relative "../lib/teachable_api"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
