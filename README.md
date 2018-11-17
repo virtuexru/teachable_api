@@ -27,19 +27,19 @@ Or install it yourself as:
 # Get array of lists
 @client.get_lists
 
-# Get specific list by :id
+# Get specific list by :list_id
 @client.get_list(list_id)
 
-# Add list(s)
+# Add list
 @client.add_list({:list=>{:name=>"Test List"}})
 
-# Update existing list by :id
-@client.update_lists(list_Id, {:list=>{:name=>"Ranchos Dineros"}})
+# Update existing list by :list_id
+@client.update_lists(list_id, {:list=>{:name=>"Ranchos Dineros"}})
 
-# Delete a list by :id
+# Delete a list by :list_id
 @client.delete_list(list_id)
 
-# Add an item to list by :id
+# Add an item to list by :list_id
 @client.add_item(list_id, {:item=>{:name=>"Feed the cat"}})
 
 # Mark an item as finished by :list_id, :item_id
