@@ -43,10 +43,10 @@ Or install it yourself as:
 @client.add_item(list_id, {:item=>{:name=>"Feed the cat"}})
 
 # Mark an item as finished by :list_id, :item_id
-client.finish(list_id, item_id)
+@client.finish(list_id, item_id)
 
 # Delete an item by :list_id, :item_id
-client.delete_item(list_id, item_id)
+@client.delete_item(list_id, item_id)
 ```
 
 #### If checking out the gem locally:
@@ -54,7 +54,7 @@ client.delete_item(list_id, item_id)
 bundle exec irb
 require "./lib/teachable_api.rb"
 @client = TeachableApi::Client.new("username", "password")
-# @client.[any available call below]
+# @client.[any available call above]
 ```
 
 ## Development
